@@ -1,21 +1,17 @@
 #!/bin/bash
 #set -e
 
-SVC_COFFEE_PATH="/Users/camsellem/Development/coffee-demo/coffee-service"
-SVC_BEAN_PATH="/Users/camsellem/Development/coffee-demo/bean-service"
-HELM_CHART_PATH="/Users/camsellem/Development/coffee-demo/helm"
 K8S_AGENT_NAMESPACE="default"
 
-GC_METRICS_ENDPOINT="https://prometheus-prod-10-prod-us-central-0.grafana.net/api/prom/push"
-GC_METRICS_USERNAME="208413"
-GC_LOGS_ENDPOINT="https://logs-prod-us-central1.grafana.net/loki/api/v1/push"
-GC_LOGS_USERNAME="103178"
-GC_TRACES_ENDPOINT="https://prometheus-prod-10-prod-us-central-0.grafana.net/api/prom/push"
-GC_TRACES_USERNAME="99690"
-GC_API_KEY="eyJrIjoiNDUzZDk5ODVmYTQ0MGRmZGI2ZjQwNDljMDRhOGIxMjU5NzYzMDE1NiIsIm4iOiJjYW1zZWxsZW0tZWFzeXN0YXJ0LXByb20tcHVibGlzaGVyIiwiaWQiOjQ2ODg4MX0="
+GC_METRICS_ENDPOINT="https://prometheus-prod-10-prod-us-central-0.grafana.net/api/prom/push" # Your Grafana Cloud Metrics endpoint
+GC_METRICS_USERNAME="208413"  # Your Grafana Cloud Metrics username
+GC_LOGS_ENDPOINT="https://logs-prod-us-central1.grafana.net/loki/api/v1/push" # Your Grafana Cloud Logs endpoint
+GC_LOGS_USERNAME="103178"  # Your Grafana Cloud Logs username
+GC_TRACES_ENDPOINT="https://prometheus-prod-10-prod-us-central-0.grafana.net/api/prom/push" # Your Grafana Cloud Traces endpoint
+GC_TRACES_USERNAME="99690"  # Your Grafana Cloud Traces username
+GC_API_KEY="" # Your Grafana Cloud API Key
 
 DOCKER_IMG_REPO_URL="australia-southeast1-docker.pkg.dev/solutions-engineering-248511/camsellem-artifact-repo"
-
 
 clean() {
   SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
