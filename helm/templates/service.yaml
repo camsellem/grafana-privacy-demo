@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.global.service.name }}
+  labels:
+    # {{- include "privacy-app.labels" . | nindent 4 }}
+spec:
+  type: LoadBalancer
+  ports:
+    - name: lb-frontend
+      port: 80
+      targetPort: frontend-http
+      protocol: TCP
+    - name: lb-loki-push
+      port: 3500
+      targetPort: loki-push-api
+      protocol: TCP
+  selector:
+    app: {{ include "privacy-app.name" . }}
+    lbtype: ext-shared-lb

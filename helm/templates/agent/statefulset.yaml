@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: grafana-agent
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: grafana-agent
+      app: {{ include "privacy-app.name" . }}
+      lbtype: ext-shared-lb
+  serviceName: {{ .Values.global.service.name }}
+  template:
+    metadata:
+      labels:
+        name: grafana-agent
+        app: {{ include "privacy-app.name" . }}
+        lbtype: ext-shared-lb
+    spec:
+      containers:
+      - args:
+        - -config.file=/etc/agent/agent.yaml
+        - -enable-features=integrations-next
+        - -server.http.address=0.0.0.0:80
+        command:
+        - /bin/agent
+        env:
+        - name: HOSTNAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        image: grafana/agent:v0.27.1
+        imagePullPolicy: IfNotPresent
+        name: grafana-agent
+        ports:
+        - name: http-metrics
+          containerPort: 80
+          protocol: TCP
+        - name: loki-push-api
+          containerPort: 3500
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /var/lib/agent
+          name: agent-wal
+        - mountPath: /etc/agent
+          name: grafana-agent
+      serviceAccountName: grafana-agent
+      volumes:
+      - configMap:
+          name: grafana-agent
+        name: grafana-agent
+  updateStrategy:
+    type: RollingUpdate
+  volumeClaimTemplates:
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: agent-wal
+      namespace: default
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 5Gi

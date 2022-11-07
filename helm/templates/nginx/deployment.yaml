@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.www.name }}
+  labels:
+    app: {{ include "privacy-app.name" . }}
+    # {{- include "privacy-app.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.www.autoscaling.enabled }}
+  replicas: {{ .Values.www.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      lbtype: ext-shared-lb
+      # {{- include "privacy-app.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.www.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        app: {{ include "privacy-app.name" . }}
+        service: {{ .Values.www.name }}
+        lbtype: ext-shared-lb
+        # {{- include "privacy-app.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.www.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "privacy-app.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.www.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.www.securityContext | nindent 12 }}
+          image: "{{ .Values.www.image.repository }}:{{ .Values.www.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.www.image.pullPolicy }}
+          ports:
+            - name: frontend-http
+              containerPort: 80
+              protocol: TCP
+          # livenessProbe:
+          #   httpGet:
+          #     path: /healthz
+          #     port: 5000
+          #   initialDelaySeconds: {{ .Values.global.probes.initialDelaySeconds }}
+          #   periodSeconds: 60
+          #   successThreshold: 1
+          #   timeoutSeconds: 15
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: 5000
+          #   initialDelaySeconds: {{ .Values.global.probes.initialDelaySeconds }}
+          resources:
+            {{- toYaml .Values.www.resources | nindent 12 }}
+      {{- with .Values.www.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.www.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.www.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
