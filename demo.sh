@@ -1,17 +1,28 @@
 #!/bin/bash
 #set -e
 
-K8S_AGENT_NAMESPACE="default"
+################################################################
+# Configuration -
+# DOCKER_IMG_REPO_URL - URL of the images repository
+# K8S_AGENT_NAMESPACE - Namespace used to install the demo
+# GC_METRICS_ENDPOINT - Your Grafana Cloud Metrics endpoint
+# GC_METRICS_USERNAME - Your Grafana Cloud Metrics username
+# GC_LOGS_ENDPOINT    - Your Grafana Cloud Logs endpoint
+# GC_LOGS_USERNAME    - Your Grafana Cloud Logs username
+# GC_TRACES_ENDPOINT  - Your Grafana Cloud Traces endpoint
+# GC_TRACES_USERNAME  - Your Grafana Cloud Traces username
+# GC_API_KEY          - Your Grafana Cloud API Key
+################################################################
 
-GC_METRICS_ENDPOINT="https://prometheus-prod-10-prod-us-central-0.grafana.net/api/prom/push" # Your Grafana Cloud Metrics endpoint
-GC_METRICS_USERNAME="208413"  # Your Grafana Cloud Metrics username
-GC_LOGS_ENDPOINT="https://logs-prod-us-central1.grafana.net/loki/api/v1/push" # Your Grafana Cloud Logs endpoint
-GC_LOGS_USERNAME="103178"  # Your Grafana Cloud Logs username
-GC_TRACES_ENDPOINT="https://prometheus-prod-10-prod-us-central-0.grafana.net/api/prom/push" # Your Grafana Cloud Traces endpoint
-GC_TRACES_USERNAME="99690"  # Your Grafana Cloud Traces username
-GC_API_KEY="" # Your Grafana Cloud API Key
-
-DOCKER_IMG_REPO_URL="australia-southeast1-docker.pkg.dev/solutions-engineering-248511/camsellem-artifact-repo"
+DOCKER_IMG_REPO_URL=""
+K8S_AGENT_NAMESPACE=""
+GC_METRICS_ENDPOINT=""
+GC_METRICS_USERNAME=""
+GC_LOGS_ENDPOINT=""
+GC_LOGS_USERNAME=""
+GC_TRACES_ENDPOINT=""
+GC_TRACES_USERNAME=""
+GC_API_KEY=""
 
 clean() {
   SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
@@ -63,5 +74,15 @@ case "$1" in
    deploy)
       shift
       deploy
+
+      external_ip=""
+      while [ -z $external_ip ]; do
+        echo "External IP is being assigned. Please wait."
+        external_ip=$(kubectl get svc privacy-demo-svc --template="{{range .status.loadBalancer.ingress}}{{.ip}}{{end}}")
+        [ -z "$external_ip" ] && sleep 15
+      done
+
+      echo "The web portal is available at the following address: http://"$external_ip
+      echo "The agent Push API endpoint is available at the following address: http://"$external_ip":3500"
       ;;
 esac
