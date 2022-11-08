@@ -1,5 +1,10 @@
-# grafana-privacy-demo
-This is the 
+# The Grafana Privacy demo
+This repository contains the demo artifacts used for the Grafana webinar "Managing privacy in log data with Grafana Loki".
+
+The purpose of the demo is to show:
+- How to use Grafana Agent pipelines to obfuscate PII data in logs
+- How to detect PII data and use Grafana Logs LBAC to protect access to sensitive information
+- How to use Grafana Agent metrics to design PII audit dashboards in Grafana (TBD)
 
 ## Pre-requisites
 - Access to a Kubernetes cluster - the demo was tested on Google Kubernetes Engine (GKE)
@@ -35,12 +40,12 @@ Run the following command in order to deploy the demo in your Kubernetes cluster
 ./demo.sh deploy
  ```
 
-Once the deployment is over the script should displayed the address of the web portal and the Agent Push API
+Once the deployment is over the script should displayed the address of the web portal and the Grafana Agent Push API
 
 ## Limitations
 Because the web portal and the Grafana Agent Push API endpoint are exposed on different ports, you need to disable CORS protection in your browser.
 
-One way to do it is by starting chrome with the specific flag as shown below
+One way to do it is by starting chrome with the specific flag as shown below:
 
 ```sh
 open -n -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args --user-data-dir="/tmp/chrome_dev_test" --disable-web-security
