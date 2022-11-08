@@ -12,7 +12,7 @@ The purpose of the demo is to show:
 - Helm installed on your laptop
 
 ## Running the demo
-Please
+The following steps describe how to build and deploy the demo in your envrionment.
 
 ### Configure the script
 You need to edit the script demo.sh and configure the following variables.
