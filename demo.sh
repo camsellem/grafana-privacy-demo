@@ -22,7 +22,7 @@ GC_LOGS_ENDPOINT="https://logs-prod-us-central1.grafana.net/loki/api/v1/push"
 GC_LOGS_USERNAME="103178"
 GC_TRACES_ENDPOINT="https://prometheus-prod-10-prod-us-central-0.grafana.net/api/prom/push"
 GC_TRACES_USERNAME="99690"
-GC_API_KEY="eyJrIjoiNDUzZDk5ODVmYTQ0MGRmZGI2ZjQwNDljMDRhOGIxMjU5NzYzMDE1NiIsIm4iOiJjYW1zZWxsZW0tZWFzeXN0YXJ0LXByb20tcHVibGlzaGVyIiwiaWQiOjQ2ODg4MX0="
+GC_API_KEY=""
 
 clean() {
   SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
@@ -82,7 +82,7 @@ case "$1" in
         [ -z "$external_ip" ] && sleep 15
       done
 
-      echo "The web portal is available at the following address: http://"$external_ip
-      echo "The agent Push API endpoint is available at the following address: http://"$external_ip":3500"
+      echo "Demo web app address: http://"$external_ip
+      echo "Grafana Agent Push API endpoint address: http://"$external_ip":3500"
       ;;
 esac

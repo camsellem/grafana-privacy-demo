@@ -50,3 +50,9 @@ One way to do it is by starting chrome with the specific flag as shown below:
 ```sh
 open -n -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args --user-data-dir="/tmp/chrome_dev_test" --disable-web-security
 ```
+
+## TO-DO
+- Clean Grafana Agent deployment
+- Deploy an ingress controller for avoiding CORS issues
+- Fix modal window on the web-app
+- Clean-up the web-app
