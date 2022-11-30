@@ -7,9 +7,10 @@ The purpose of the demo is to show:
 - How to use Grafana Agent metrics to design PII audit dashboards in Grafana (TBD)
 
 ## Pre-requisites
+- A Grafana Cloud stack (including logs and metrics instances)
 - Access to a Kubernetes cluster - the demo was tested on Google Kubernetes Engine (GKE)
 - The Kubernetes command-line tool (kubectl) installed on your laptop
-- Helm installed on your laptop
+- Helm installed on your laptop (tested with Helm v3)
 
 ## Running the demo
 The following steps describe how to build and deploy the demo in your envrionment.
@@ -42,6 +43,16 @@ Run the following command in order to deploy the demo in your Kubernetes cluster
 
 Once the deployment is over the script should displayed the address of the web portal and the Grafana Agent Push API
 
+The agent also exposes pipeline metrics than can be used to track how many sensite values have been detected/deleted/redacted. These metrics can be displayed via the "Audit and privicaty dashboard". The template is available in the ./dashboard folder and must be imported in your Grafana Cloud instance.
+
+### Delete the demo
+If you wish to delete all deployed artifacts (frontend, agent, etc) please run the command below:
+```sh
+./demo.sh clean
+ ```
+
+Once the deployment is over the script should displayed the address of the web portal and the Grafana Agent Push API
+
 ## Limitations
 Because the web portal and the Grafana Agent Push API endpoint are exposed on different ports, you need to disable CORS protection in your browser.
 
@@ -52,6 +63,8 @@ open -n -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args
 ```
 
 ## TO-DO
+- Add the dashboard to the repo
+- Templatize agent version and namespace
 - Clean Grafana Agent deployment
 - Deploy an ingress controller for avoiding CORS issues
 - Fix modal window on the web-app

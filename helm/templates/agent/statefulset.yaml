@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: grafana-agent
-  namespace: default
+  namespace: {{ .Values.global.namespace }}
 spec:
   replicas: 1
   selector:
@@ -57,7 +57,7 @@ spec:
     kind: PersistentVolumeClaim
     metadata:
       name: agent-wal
-      namespace: default
+      namespace: {{ .Values.global.namespace }}
     spec:
       accessModes:
       - ReadWriteOnce
