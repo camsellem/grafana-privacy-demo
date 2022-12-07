@@ -8,12 +8,12 @@ The purpose of the demo is to show:
 
 |   |   |
 |---|---|
-| Title    | Manages privacy in your log data with Grafana Logs                              |
-| Duration | 20 minutes                                                                      |
-| Audience | Technical and non-technical                                                     |
-| Personas | CISO <br \> Devops                                                              |
-| Products | Grafana Cloud Logs<br>Grafana Enterprise Logs                                   |
-| Features | Grafana Agent - Pipeline stages<br>Grafana Agent - Pipeline metrics<br>LBAC     |
+| __Title__    | Manages privacy in your log data with Grafana Logs                              |
+| __Duration__ | 20 minutes                                                                      |
+| __Audience__ | Technical and non-technical                                                     |
+| __Personas__ | CISO <br \> Devops                                                              |
+| __Products__ | Grafana Cloud Logs<br>Grafana Enterprise Logs                                   |
+| __Features__ | Grafana Agent - Pipeline stages<br>Grafana Agent - Pipeline metrics<br>LBAC     |
 
 ## Pre-requisites
 - A Grafana Cloud stack (including logs and metrics instances)
