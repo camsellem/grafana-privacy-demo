@@ -7,7 +7,9 @@ The purpose of the demo is to show:
 - How to use Grafana Agent metrics to design PII audit dashboards in Grafana (TBD)
 
 | Title    | Manages privacy in your log data with Grafana Logs                              |
+|:---------| :-------------------------------------------------------------------------------|
 | Duration | 20 minutes                                                                      |
+|:---------| :-------------------------------------------------------------------------------|
 | Audience | Technical and non-technical                                                     |
 | :---: | :---: |
 | Personas | CISO <br \> Devops                                                              |
