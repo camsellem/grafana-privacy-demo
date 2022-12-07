@@ -6,6 +6,15 @@ The purpose of the demo is to show:
 - How to detect PII data and use Grafana Logs LBAC to protect access to sensitive information
 - How to use Grafana Agent metrics to design PII audit dashboards in Grafana (TBD)
 
+|----------|-------------------------------------------------------------------|
+| Title    | Manages privacy in your log data with Grafana Logs    |   |   |   |
+| Duration | 20 minutes                                            |   |   |   |
+| Audience | Technical and non-technical                           |   |   |   |
+| Personas | CISO <br \> Devops                                    |   |   |   |
+| Products | Grafana Cloud Logs<br \>Grafana Enterprise Logs       |   |   |   |
+| Features | Grafana Agent - Pipeline stages<br \>Grafana Agent - Pipeline metrics<br \>LBAC |   |   |   |
+|----------|-------------------------------------------------------------------|
+
 ## Pre-requisites
 - A Grafana Cloud stack (including logs and metrics instances)
 - Access to a Kubernetes cluster - the demo was tested on Google Kubernetes Engine (GKE)
@@ -24,8 +33,6 @@ GC_METRICS_ENDPOINT - Your Grafana Cloud Metrics endpoint
 GC_METRICS_USERNAME - Your Grafana Cloud Metrics username
 GC_LOGS_ENDPOINT    - Your Grafana Cloud Logs endpoint
 GC_LOGS_USERNAME    - Your Grafana Cloud Logs username
-GC_TRACES_ENDPOINT  - Your Grafana Cloud Traces endpoint
-GC_TRACES_USERNAME  - Your Grafana Cloud Traces username
 GC_API_KEY          - Your Grafana Cloud API Key
  ```
 
