@@ -28,7 +28,7 @@ The following steps describe how to build and deploy the demo in your envrionmen
 You need to edit the script demo.sh and configure the following variables.
 ```sh
 DOCKER_IMG_REPO_URL - URL of the images repository
-K8S_NAMESPACE - Namespace used to install the demo
+K8S_NAMESPACE       - Namespace used to install the demo
 GC_METRICS_ENDPOINT - Your Grafana Cloud Metrics endpoint
 GC_METRICS_USERNAME - Your Grafana Cloud Metrics username
 GC_LOGS_ENDPOINT    - Your Grafana Cloud Logs endpoint
