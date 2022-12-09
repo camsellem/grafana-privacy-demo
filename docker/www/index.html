@@ -34,71 +34,6 @@
       }]
     });
 
-    const logLokiPayload = (privacyJob, line) => ({
-      streams: [{
-        stream: {
-          level: "debug",
-          app: "web",
-          module: "contact form",
-          instance: "127.0.0.1",
-          privacy: privacyJob,
-        },
-        values: [
-          ["" + Date.now() * 1000000 + "", JSON.stringify(line)]
-        ]
-      }]
-    });
-
-    const googlePayload = `
-    {
-      "item":{
-        "value":"Hello, I need some help. My credit card is no longer working. My credit card number is 4263-9826-4026-9299. Please call me back."
-      },
-      "deidentifyConfig":{
-        "infoTypeTransformations":{
-          "transformations":[
-            {
-              "infoTypes":[
-                {
-                  "name":"EMAIL_ADDRESS",
-                  "name":"PHONE_NUMBER",
-                  "name":"CREDIT_CARD_NUMBER"
-                }
-              ],
-              "primitiveTransformation":{
-                "replaceConfig":{
-                  "newValue":{
-                    "stringValue":"[data erased]"
-                  }
-                }
-              }
-            }
-          ]
-        }
-      },
-      "inspectConfig":{
-        "infoTypes":[
-          {
-            "name":"EMAIL_ADDRESS",
-            "name":"PHONE_NUMBER",
-            "name":"CREDIT_CARD_NUMBER"
-          }
-        ]
-      }
-    }`
-
-    function googleDlpDeId(payload, callback) {
-      fetch('https://dlp.googleapis.com/v2/projects/solutions-engineering-248511/content:deidentify?key=AIzaSyBK6VYWxDJjue1Wh0NwiNrLh-2aUv0esSU', {
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: payload
-      }).then(response => {
-        return response.json()
-      }).then(result => callback(result));
-    }
-
     function sendLogLoki(lokiUrl, payload) {
       fetch('http://' + window.location.hostname + ':3500/loki/api/v1/push', {
         method: 'post',
@@ -114,9 +49,9 @@
 
     document.addEventListener('DOMContentLoaded', (event) => {
       document.getElementById("main").addEventListener('dblclick', function (e) {
-        document.getElementById("txtName").value = "John Doe";
+        document.getElementById("txtName").value = "Cyril Amsellem";
         document.getElementById("txtPhone").value = "0481900000";
-        document.getElementById("txtEmail").value = "john.doe@grafana.com";
+        document.getElementById("txtEmail").value = "cyril.amsellem@grafana.com";
         document.getElementById("txtMessage").value = "Hello, I need some help.\n My credit card is no longer working.\n My credit card number is 4263-9826-4026-9299.\n Please call me back.";
       });
 
@@ -127,35 +62,23 @@
 
       document.getElementById("lokiSecuritySwitch").addEventListener("click", async function () {
         document.getElementById("lokiDeIdSwitch").checked = false
-        // document.getElementById("googleDlpSwitch").checked = false
       });
 
       document.getElementById("lokiDeIdSwitch").addEventListener("click", async function () {
         document.getElementById("lokiSecuritySwitch").checked = false
-        // document.getElementById("googleDlpSwitch").checked = false
       });
-
-      // document.getElementById("googleDlpSwitch").addEventListener("click", async function () {
-      //   document.getElementById("lokiSecuritySwitch").checked = false
-      //   document.getElementById("lokiDeIdSwitch").checked = false
-      // });
 
       document.getElementById("btnSubmit").addEventListener("click", async function () {
         if (document.getElementById("lokiSecuritySwitch").checked) {
-          console.log("DEBUG -- Security controls tagging")
+          console.log("Security controls tagging")
           let payload = logPayload("sec")
           sendLogLoki('http://localhost:3500/webinar/loki/api/v1/push', payload)
         } else if (document.getElementById("lokiDeIdSwitch").checked) {
-          console.log("DEBUG -- De-Identification in Grafana Loki")
+          console.log("De-identification in Grafana Loki")
           let payload = logPayload("deid")
           sendLogLoki('http://localhost:3500/webinar/loki/api/v1/push', payload)
-        // } else if (document.getElementById("googleDlpSwitch").checked) {
-        //   console.log("DEBUG -- De-Identification in Google DLP")
-        //   googleDlpDeId(googlePayload, (data) => {
-        //     sendLogLoki('https://localhost:3500/webinar/loki/api/v1/push', logLokiPayload("dlp", data))
-        //   })
         } else {
-          console.log("DEBUG -- No privacy control in place")
+          console.log("No privacy control selected")
           let payload = logPayload("none", document.querySelectorAll("input[type=text], textarea"))
           sendLogLoki('https://localhost:3500/webinar/loki/api/v1/push', payload)
           //console.log(payload);
@@ -210,7 +133,7 @@
           </div> -->
           <div class="">
             <input type="submit" name="btnSubmit" id="btnSubmit" class="btnContact" value="Send Message"
-              data-toggle="modal" data-target="#msgSentModal" />
+              data-bs-toggle="modal" data-bs-target="#msgSentModal" />
           </div>
         </div>
         <div class="col-md-6">
@@ -228,10 +151,8 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Thanks for reaching out</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <h5 class="modal-title">Thanks for reaching out</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           We will get back to you as soon as possible.

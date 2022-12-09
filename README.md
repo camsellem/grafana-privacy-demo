@@ -28,7 +28,7 @@ The following steps describe how to build and deploy the demo in your envrionmen
 You need to edit the script demo.sh and configure the following variables.
 ```sh
 DOCKER_IMG_REPO_URL - URL of the images repository
-K8S_AGENT_NAMESPACE - Namespace used to install the demo
+K8S_NAMESPACE - Namespace used to install the demo
 GC_METRICS_ENDPOINT - Your Grafana Cloud Metrics endpoint
 GC_METRICS_USERNAME - Your Grafana Cloud Metrics username
 GC_LOGS_ENDPOINT    - Your Grafana Cloud Logs endpoint
@@ -50,7 +50,7 @@ Run the following command in order to deploy the demo in your Kubernetes cluster
 
 Once the deployment is over the script should displayed the address of the web portal and the Grafana Agent Push API
 
-The agent also exposes pipeline metrics than can be used to track how many sensite values have been detected/deleted/redacted. These metrics can be displayed via the "Audit and privicaty dashboard". The template is available in the ./dashboard folder and must be imported in your Grafana Cloud instance.
+The agent also exposes pipeline metrics than can be used to track how many sensitive values have been detected/deleted/redacted. These metrics can be displayed via the "Audit and privicaty dashboard". The template is available in the ./dashboard folder and must be imported in your Grafana Cloud instance.
 
 ### Delete the demo
 If you wish to delete all deployed artifacts (frontend, agent, etc) please run the command below:
@@ -70,7 +70,6 @@ open -n -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args
 ```
 
 ## TO-DO
-- Add the dashboard to the repo
 - Templatize agent version and namespace
 - Clean Grafana Agent deployment
 - Deploy an ingress controller for avoiding CORS issues
