@@ -70,8 +70,4 @@ open -n -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args
 ```
 
 ## TO-DO
-- Templatize agent version and namespace
-- Clean Grafana Agent deployment
 - Deploy an ingress controller for avoiding CORS issues
-- Fix modal window on the web-app
-- Clean-up the web-app
