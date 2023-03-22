@@ -15,10 +15,10 @@
 DOCKER_IMG_REPO_URL="australia-southeast1-docker.pkg.dev/solutions-engineering-248511/camsellem-artifact-repo"
 K8S_NAMESPACE="privacy-demo"
 GC_METRICS_ENDPOINT="https://prometheus-prod-10-prod-us-central-0.grafana.net/api/prom/push"
-GC_METRICS_USERNAME="208413"
+GC_METRICS_USERNAME=""
 GC_LOGS_ENDPOINT="https://logs-prod-us-central1.grafana.net/loki/api/v1/push"
-GC_LOGS_USERNAME="103178"
-GC_API_KEY="eyJrIjoiNDUzZDk5ODVmYTQ0MGRmZGI2ZjQwNDljMDRhOGIxMjU5NzYzMDE1NiIsIm4iOiJjYW1zZWxsZW0tZWFzeXN0YXJ0LXByb20tcHVibGlzaGVyIiwiaWQiOjQ2ODg4MX0="
+GC_LOGS_USERNAME=""
+GC_API_KEY=""
 
 clean() {
   SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
