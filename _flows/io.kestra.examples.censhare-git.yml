@@ -57,7 +57,7 @@ tasks:
 
       - id: push
         type: io.kestra.plugin.git.Push
-        directory: ./repo
+        directory: repo
         username: "camsellem"
         password: "{{ secret('github_token') }}"
         # url: https://github.com/camsellem/grafana-privacy-demo.git
