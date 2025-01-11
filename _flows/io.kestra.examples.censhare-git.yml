@@ -49,18 +49,6 @@ tasks:
           replicaCount: {{ inputs['replicas'] }}
           message: "{{ inputs['message'] }}"
           EOF
-        # outputFiles:
-        #   - whale.txt
-
-      # - id: ls
-      #   type: io.kestra.plugin.scripts.shell.Script
-      #   script: |
-      #     ls -la .
-
-      # - id: ls-repo
-      #   type: io.kestra.plugin.scripts.shell.Script
-      #   script: |
-      #     ls -ls repo/
 
       - id: ls-repo-whally
         type: io.kestra.plugin.scripts.shell.Script
