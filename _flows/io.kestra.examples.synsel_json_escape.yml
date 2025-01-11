@@ -1,0 +1,13 @@
+id: synsel_json_escape
+namespace: io.kestra.examples
+
+inputs:
+- id: prompt
+  type: JSON
+  required: true
+  defaults: [{ color: "red", value: "#f00"}]
+
+tasks:
+  - id: hello
+    type: io.kestra.plugin.core.log.Log
+    message: "Prompt: {{ inputs.prompt | toJson }}"

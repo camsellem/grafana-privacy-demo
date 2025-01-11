@@ -1,0 +1,18 @@
+id: flow-trigger-example
+namespace: io.kestra.examples
+
+tasks:
+  - id: hello
+    type: io.kestra.plugin.core.log.Log
+    message: "Trigger #{{ trigger.executionId }} fired"
+
+triggers:
+  - id: listen_flow
+    type: io.kestra.plugin.core.trigger.Flow
+    conditions:
+      - type: io.kestra.plugin.core.condition.ExecutionFlowCondition
+        namespace: tutorial
+        flowId: hello_world
+      - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
+        in:
+          - SUCCESS

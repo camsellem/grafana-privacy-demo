@@ -1,0 +1,12 @@
+id: synsel_regex
+namespace: io.kestra.examples
+
+inputs:
+  - id: url
+    type: STRING
+    defaults: This \n is \n my value \n
+
+tasks:
+  - id: clean_string
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ inputs.url | substringBeforeLast('\\n')}}"

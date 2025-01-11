@@ -1,0 +1,15 @@
+id: gitops-listflows
+namespace: io.kestra.examples
+
+tasks:
+  - id: hello
+    type: io.kestra.plugin.core.log.Log
+    message: Hey this is my main flow
+
+  - id: subflow_selectflow
+    type: io.kestra.plugin.core.flow.Subflow
+    flowId: gitops-selectflow
+    namespace: io.kestra.examples
+    inputs:
+      input_string: [1, 2, 3]
+    wait: true

@@ -1,0 +1,16 @@
+id: kpgm_r_script
+namespace: io.kestra.examples
+
+tasks:
+  - id: Scoring_Model
+    type: io.kestra.plugin.scripts.r.Script
+    interpreter:
+      - C:\temp\R-4.4.2\bin\x64\Rscript
+    script: "{{ read('hello_world.r') }}"
+    containerImage: ghcr.io/kestra-io/rdata:latest
+    # targetOS: WINDOWS
+    # taskRunner:
+    #   type: io.kestra.plugin.core.runner.Process
+    warningOnStdErr: false
+
+    

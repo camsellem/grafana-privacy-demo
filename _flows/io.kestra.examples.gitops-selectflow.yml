@@ -1,0 +1,13 @@
+id: gitops-selectflow
+namespace: io.kestra.examples
+
+inputs:
+  - id: input_flows
+    type: MULTISELECT
+    required: true
+    displayName: "Select your flows"
+
+tasks:
+  - id: hello
+    type: io.kestra.plugin.core.log.Log
+    message: "From the parent flow: {{ inputs.input_string }}"

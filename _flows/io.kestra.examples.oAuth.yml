@@ -1,0 +1,61 @@
+id: oAuth
+namespace: io.kestra.examples
+
+tasks:
+  # - id: sfdc_get_authtoken
+  #   type: io.kestra.plugin.core.http.Request
+  #   uri: https://hydrolix.my.salesforce.com/services/oauth2/token
+  #   method: POST
+  #   contentType: "multipart/form-data"
+  #   formData:
+  #     grant_type: "client_credentials"
+  #     client_id: 3MVG9Xl3BC6VHB.bt3ek997g4EGHT2bjLKg0uW4kl2Mk.1nmjxOzXg4FvaDQG5VBqYpzJoDle3IOw12QLKshl
+  #     client_secret: 39AE5398B38560F33BC631AAA2A0531689F3CFD715F47EBCA8394DA8199648B0
+
+  - id: sfdcGetAccountsList
+    type: io.kestra.plugin.core.http.Request
+    allowFailed: true
+    headers:
+      Authorization: Bearer {{ kv('sfdcAccessToken') }}
+    uri: https://hydrolix.my.salesforce.com/services/data/v61.0/sobjects/Contact/describe
+
+  - id: ifError401
+    type: io.kestra.plugin.core.flow.If
+    condition: "{{ outputs.sfdcGetAccountsList.code == 401}}"
+    then:
+      - id: logTokenRefreshMessage
+        type: io.kestra.plugin.core.log.Log
+        message: "Let's refresh the token"
+
+      - id: sfdcGetAccessToken
+        type: io.kestra.plugin.core.http.Request
+        uri: https://hydrolix.my.salesforce.com/services/oauth2/token
+        method: POST
+        contentType: "multipart/form-data"
+        formData:
+          grant_type: "client_credentials"
+          client_id: 3MVG9Xl3BC6VHB.bt3ek997g4EGHT2bjLKg0uW4kl2Mk.1nmjxOzXg4FvaDQG5VBqYpzJoDle3IOw12QLKshl
+          client_secret: 39AE5398B38560F33BC631AAA2A0531689F3CFD715F47EBCA8394DA8199648B0
+
+      - id: storeAccessToken
+        type: io.kestra.plugin.core.kv.Set
+        key: sfdcAccessToken
+        value: "{{ outputs.sfdcGetAccessToken.body | jq('.access_token') | first }}"
+
+      - id: sfdcGetAccountsListRetry
+        type: io.kestra.plugin.core.http.Request
+        allowFailed: true
+        headers:
+          Authorization: Bearer {{ kv('sfdcAccessToken') }}
+        uri: https://hydrolix.my.salesforce.com/services/data/v61.0/sobjects/Contact/describe
+    else:
+      - id: logOkMessage
+        type: io.kestra.plugin.core.log.Log
+        message: "All good, the token is fresh enough"
+
+
+# errors:
+#   - id: 2nd
+#     type: io.kestra.plugin.core.log.Log
+#     message: I'm failing {{ outputs.sfdc_get_listaccounts.code }}
+#     level: INFO

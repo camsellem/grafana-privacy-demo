@@ -1,0 +1,30 @@
+id: synsel_api_null
+namespace: io.kestra.examples
+inputs:
+  - id: consultantId
+    type: INT
+    required: false
+    defaults: 10
+  - id: candidateId
+    type: INT
+    required: false
+  - id: candidateName
+    type: STRING
+    required: false
+    defaults: "Cyril"
+tasks:
+  - id: http_ref
+    type: io.kestra.plugin.core.http.Request
+    contentType: application/json
+    uri: "https://eo2l95tddjtig44.m.pipedream.net"
+    method: POST
+    body: |
+      {
+        "userId": {{ inputs.consultantId ?? 'null' }}
+        "candidateId": {{ inputs.candidateId ?? 'null' }}
+        "candidateName": "{{ inputs.candidateName }}"
+      }
+outputs:
+  - id: result
+    type: JSON
+    value: "{{outputs.http_ref.body}}"

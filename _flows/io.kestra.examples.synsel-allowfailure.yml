@@ -1,0 +1,35 @@
+id: synsel-allowfailure
+namespace: io.kestra.examples
+
+inputs:
+  - id: waitFor
+    type: BOOLEAN
+    defaults: false
+
+tasks:
+- id: loop
+  type: io.kestra.plugin.core.flow.WaitFor
+  condition: "{{ inputs.waitFor == true }}"
+  allowFailure: true
+  tasks:
+    - id: sequential
+      type: io.kestra.plugin.core.flow.AllowFailure
+      tasks:
+      - id: GetVacancy
+        type: "io.kestra.plugin.core.log.Log"
+        level: INFO
+        message: "Running GetVacancy"
+        
+      - id: ProcessRawIf
+        type: io.kestra.plugin.core.flow.If
+        allowFailure: true
+        condition: "{{ inputs.waitFor == true }}"
+        then:
+          - id: ProcessRawVacancy
+            type: io.kestra.plugin.scripts.shell.Commands
+            commands:
+              - 'exit 1'
+  checkFrequency:
+    interval: PT0S
+    maxDuration: PT3H
+    maxIterations: 10000

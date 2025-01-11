@@ -1,0 +1,14 @@
+id: synsel_node
+namespace: io.kestra.examples
+
+inputs:
+  - id: page
+    type: INT
+    required: false
+
+tasks:
+  - id: demo
+    type: io.kestra.plugin.scripts.node.Script
+    script: |
+      const page = parseInt('{{ inputs.page }}')
+      console.log('the page is '+ page)

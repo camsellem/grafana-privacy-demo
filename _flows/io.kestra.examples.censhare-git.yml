@@ -1,0 +1,79 @@
+id: censhare-git
+namespace: io.kestra.examples
+
+inputs:
+  - id: name
+    displayName: What is the whale's name?
+    type: STRING
+    defaults: whally
+    required: true
+
+  - id: message
+    displayName: What message should the whale say?    # Fixed display name
+    type: STRING
+    defaults: Hellooooo!
+    required: true
+
+  - id: replicas
+    displayName: Number of replicas
+    type: SELECT
+    defaults: 1
+    values:
+      - 1
+      - 3
+      - 5
+
+tasks:
+  - id: wdir
+    type: io.kestra.plugin.core.flow.WorkingDirectory
+    
+    tasks:     
+      - id: delete_local_repo
+        type: io.kestra.plugin.scripts.shell.Script
+        script: |
+          rm -Rf ./repo
+
+      - id: clone_repo
+        type: io.kestra.plugin.git.Clone
+        branch: master
+        url: https://github.com/camsellem/grafana-privacy-demo.git
+        directory: repo
+        username: camsellem
+        password: "{{ secret('github_token') }}"
+
+      - id: generate_data
+        type: io.kestra.plugin.scripts.shell.Script
+        script: |
+          mkdir -p repo/{{ inputs['name'] }}
+          cat << EOF > repo/{{ inputs['name'] }}/values.yaml
+          replicaCount: {{ inputs['replicas'] }}
+          message: "{{ inputs['message'] }}"
+          EOF
+        # outputFiles:
+        #   - whale.txt
+
+      # - id: ls
+      #   type: io.kestra.plugin.scripts.shell.Script
+      #   script: |
+      #     ls -la .
+
+      # - id: ls-repo
+      #   type: io.kestra.plugin.scripts.shell.Script
+      #   script: |
+      #     ls -ls repo/
+
+      - id: ls-repo-whally
+        type: io.kestra.plugin.scripts.shell.Script
+        script: |
+          ls -l ./repo       
+
+      - id: push
+        type: io.kestra.plugin.git.Push
+        directory: ./repo
+        username: "camsellem"
+        password: "{{ secret('github_token') }}"
+        # url: https://github.com/camsellem/grafana-privacy-demo.git
+        branch: master
+        addFilesPattern:
+          - "."
+        commitMessage: "Whale {{ inputs['name'] }} says {{ inputs['message'] }}"

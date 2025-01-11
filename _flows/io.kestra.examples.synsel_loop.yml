@@ -1,0 +1,26 @@
+id: synsel_loop
+namespace: io.kestra.examples
+
+inputs:
+  - id: string
+    type: STRING
+    required: true
+    defaults: 'FIRST'
+
+tasks:
+
+  - id: case
+    type: io.kestra.plugin.core.flow.Switch
+    value: "{{ inputs.string }}"
+    cases:
+      FIRST:
+      - id: loop
+        type: io.kestra.plugin.core.flow.WaitFor
+        condition: "{{ outputs.loop }}"
+        tasks:
+          - id: logLoop
+            type: io.kestra.plugin.core.log.Log
+            message: "Loop = {{ outputs.loop }}"
+          - id: dodo
+            type: io.kestra.plugin.core.flow.Sleep
+            duration: 5
